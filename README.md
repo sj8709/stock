@@ -31,4 +31,15 @@ C. '정상 분포 vs 볼츠만 분포'로 가격 패턴 진단
 2. 변동성 경계값 측정 : 평균 에너지 이상이면 '비정상 구간'으로 간주
 
 # 프로젝트 구성
-<pre lang="markdown"> ``` stock/ ├── main.py ← 사용자 입력에 따라 분기 ├── register_ticker.py ← 티커 등록 전용 ├── fetch_and_save.py ← 주가 수집 및 저장 전용 ├── db/ │ └── mysql_connector.py └── services/ ├── fetcher.py ├── inserter.py └── ticker_manager.py ``` </pre>
+```
+stock/
+├── main.py                   ← 사용자 입력에 따라 분기
+├── register_ticker.py        ← 티커 등록 전용
+├── fetch_and_save.py         ← 주가 수집 및 저장 전용
+├── db/
+│   └── mysql_connector.py
+└── services/
+    ├── fetcher.py
+    ├── inserter.py
+    └── ticker_manager.py
+```
