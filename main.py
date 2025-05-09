@@ -1,8 +1,17 @@
-from services.fetcher import fetch_stock_data
-from services.inserter import insert_daily_price
+import os
 
-ticker = 'NVDA'
-df = fetch_stock_data(ticker, '2025-01-01', '2025-04-30')
-insert_daily_price(df, ticker)
+def main():
+    print("🟢 Stock Manager")
+    print("1. 티커 등록")
+    print("2. 주가 수집 및 저장")
+    choice = input("선택 (1 또는 2): ").strip()
 
-print(f"{len(df)}건의 주가 데이터를 '{ticker}'로 저장했습니다.")
+    if choice == '1':
+        os.system("python register_ticker.py")
+    elif choice == '2':
+        os.system("python fetch_and_save.py")
+    else:
+        print("❗ 잘못된 선택입니다.")
+
+if __name__ == "__main__":
+    main()
