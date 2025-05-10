@@ -1,42 +1,30 @@
-from db.mysql_connector import get_connection
+# services/inserter.py
 import pandas as pd
+from services.data_access.price_mapper import insert_daily_price_record
 
 def insert_daily_price(df, ticker):
     """
-    DataFrame의 주가 데이터를 MySQL 테이블에 삽입한다.
-
-    Parameters:
-        df (DataFrame): yfinance로 가져온 주가 데이터
-        ticker (str): 종목코드 (예: 'NVDA')
+    DataFrame의 주가 데이터를 daily_price 테이블에 삽입한다.
+    날짜 포맷 오류를 방지하기 위해 Date 컬럼이 없으면 인덱스를 초기화한다.
     """
-    conn = get_connection()
-    cursor = conn.cursor()
+    # Date 컬럼이 없으면 인덱스를 초기화하여 Date 컬럼 생성
+    if 'Date' not in df.columns:
+        df = df.reset_index()
 
-    insert_sql = """
-        INSERT INTO daily_price (
-            ticker, trade_date, open_price, high_price,
-            low_price, close_price, volume
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s)
-        ON DUPLICATE KEY UPDATE
-            open_price = VALUES(open_price),
-            high_price = VALUES(high_price),
-            low_price = VALUES(low_price),
-            close_price = VALUES(close_price),
-            volume = VALUES(volume)
-    """
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
 
     for _, row in df.iterrows():
-        trade_date = pd.to_datetime(row['Date']).strftime('%Y-%m-%d')  # 강제 변환
-        cursor.execute(insert_sql, (
-            ticker,
-            trade_date,
-            float(row['Open']),
-            float(row['High']),
-            float(row['Low']),
-            float(row['Close']),
-            int(row['Volume'])
-        ))
+        if pd.isnull(row['Date']):
+            raise ValueError(f"날짜 파싱 실패: {row['Date']}")
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+        trade_date = row['Date'].strftime('%Y-%m-%d')
+
+        insert_daily_price_record(
+            ticker=ticker,
+            trade_date=trade_date,
+            open_price=float(row['Open']),
+            high_price=float(row['High']),
+            low_price=float(row['Low']),
+            close_price=float(row['Close']),
+            volume=int(row['Volume'])
+        )

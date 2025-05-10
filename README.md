@@ -33,22 +33,32 @@ C. '정상 분포 vs 볼츠만 분포'로 가격 패턴 진단
 # 프로젝트 구성
 ```
 stock/
-├── main.py                         ← 메인 메뉴 루프
+├── main.py                          # 메인 메뉴 실행 진입점 (사용자 CLI)
+
+├── commands/                        # 사용자 기능 실행용 CLI 스크립트 모음
+│   ├── fetch_and_save.py           # 등록된 티커들의 주가 수집 및 저장
+│   ├── register_ticker.py          # 티커 정보 등록
+│   ├── view_tickers.py             # 등록된 티커 목록 출력
+│   ├── view_prices.py              # 특정 티커의 일별 주가 조회
+│   ├── analyze_returns.py          # 수익률 계산 및 이상치 분석
+│   ├── backtest_strategy.py        # 백테스트 실행 CLI
 │
-├── commands/                       ← 사용자가 실행하는 CLI 스크립트 모음
-│   ├── register_ticker.py          ← 티커 등록
-│   ├── fetch_and_save.py           ← 주가 수집 및 저장
-│   ├── view_tickers.py             ← 등록된 티커 목록 출력
-│   └── view_prices.py              ← 특정 티커의 일별 가격 출력
+├── services/                        # 핵심 비즈니스 로직 처리
+│   ├── fetcher.py                  # yfinance에서 데이터 수집
+│   ├── inserter.py                 # 수집된 데이터 MySQL에 삽입
+│   ├── ticker_manager.py           # 티커 등록/조회 서비스 로직
+│   ├── backtester.py               # 이상 수익률 기반 매매 전략 백테스트
+│   └── analyzer.py                 # 수익률 계산 및 분포 분석 기능
+│
+├── services/data_access/           # 데이터 접근 계층 (쿼리 전용 모듈)
+│   ├── ticker_mapper.py            # 티커 관련 SQL 쿼리 모음
+│   ├── price_mapper.py             # 가격/수익률 관련 SQL 쿼리 모음
+│   └── backtest_mapper.py          # 백테스트용 데이터 조회 쿼리
 │
 ├── db/
-│   └── mysql_connector.py          ← MySQL 연결 유틸
+│   └── mysql_connector.py          # MySQL 연결 설정 및 커넥션 함수
 │
-├── services/                       ← 내부 로직 처리 모듈
-│   ├── fetcher.py                  ← yfinance 수집
-│   ├── inserter.py                 ← DB 저장 로직
-│   └── ticker_manager.py           ← 티커 등록/조회 처리
-│
-└── utils/
-    └── table_formatter.py          ← 한글 정렬 고려한 테이블 출력 유틸
+├── utils/
+│   └── table_formatter.py          # 콘솔 출력 시 표 형태 정렬 도우미 (한글 너비 대응)
+
 ```

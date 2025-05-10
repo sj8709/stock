@@ -1,4 +1,4 @@
-from db.mysql_connector import get_connection
+from services.data_access.price_mapper import select_recent_close_prices_with_date
 from services.analyzer import (
     calculate_returns,
     fit_maxwell_distribution,
@@ -9,27 +9,11 @@ from services.analyzer import (
 
 def get_price_and_dates(ticker: str) -> tuple[list, list]:
     """
-    주어진 티커의 최근 60일 종가 및 날짜 조회 (trade_date 오름차순 정렬)
+    주어진 티커의 최근 60일 종가 및 날짜 조회
     """
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    query = """
-    SELECT trade_date, close_price
-    FROM daily_price
-    WHERE ticker = %s
-    ORDER BY trade_date DESC
-    LIMIT 60
-    """
-    cursor.execute(query, (ticker,))
-    rows = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    # DESC로 가져왔으므로 날짜 오름차순으로 정렬
-    rows.sort(key=lambda x: x[0])
-    dates = [row[0] for row in rows]
-    prices = [row[1] for row in rows]
+    rows = select_recent_close_prices_with_date(ticker)
+    dates = [r[0] for r in rows]
+    prices = [r[1] for r in rows]
     return prices, dates
 
 
