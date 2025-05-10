@@ -1,20 +1,5 @@
-import unicodedata
 from services.ticker_manager import get_all_tickers
-
-def get_display_width(text):
-    """한글 등 전각 문자는 2칸으로 계산"""
-    width = 0
-    for ch in str(text):
-        if unicodedata.east_asian_width(ch) in ['F', 'W']:  # 전각, 넓은 문자
-            width += 2
-        else:
-            width += 1
-    return width
-
-def pad_text(text, target_width):
-    """실제 표시 너비 기준으로 오른쪽 공백 추가"""
-    padding = target_width - get_display_width(text)
-    return str(text) + ' ' * padding
+from utils.table_formatter import get_display_width, pad_text
 
 def print_ticker_table(tickers):
     print("\n📄 등록된 티커 목록\n")
@@ -25,7 +10,7 @@ def print_ticker_table(tickers):
     # 헤더 출력
     header_row = ' | '.join(pad_text(h, w) for h, w in zip(headers, col_widths))
     print(header_row)
-    print('-' * len(header_row))
+    print('-' * get_display_width(header_row))
 
     # 데이터 출력
     for t in tickers:

@@ -1,30 +1,8 @@
-import unicodedata
 from db.mysql_connector import get_connection
-
-def get_display_width(text):
-    width = 0
-    for ch in str(text):
-        if unicodedata.east_asian_width(ch) in ('F', 'W', 'A'):
-            width += 2
-        else:
-            width += 1
-    return width
-
-def print_table(data, headers):
-    col_widths = {h: get_display_width(h) for h in headers}
-    for row in data:
-        for h in headers:
-            col_widths[h] = max(col_widths[h], get_display_width(row[h]))
-
-    header_line = " | ".join(f"{h:<{col_widths[h]}}" for h in headers)
-    print(header_line)
-    print("-" * get_display_width(header_line))
-
-    for row in data:
-        row_line = " | ".join(f"{str(row[h]):<{col_widths[h]}}" for h in headers)
-        print(row_line)
+from utils.table_formatter import print_table  # ✅ 공통 유틸에서 가져옴
 
 def view_prices_list():
+    """특정 티커의 최근 50개 일별 주가를 출력하는 함수"""
     ticker = input("조회할 티커를 입력하세요 (예: AAPL): ").strip().upper()
     if not ticker:
         print("❗ 티커를 입력하지 않았습니다.")

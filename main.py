@@ -1,7 +1,7 @@
-from register_ticker import register_ticker_flow
-from fetch_and_save import fetch_and_save_flow
-from view_tickers import view_ticker_list
-from view_prices import view_prices_list
+from commands.register_ticker import register_ticker_flow
+from commands.fetch_and_save import fetch_and_save_flow
+from commands.view_tickers import view_ticker_list
+from commands.view_prices import view_prices_list
 
 def main():
     while True:
