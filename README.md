@@ -33,13 +33,22 @@ C. '정상 분포 vs 볼츠만 분포'로 가격 패턴 진단
 # 프로젝트 구성
 ```
 stock/
-├── main.py                   ← 사용자 입력에 따라 분기
-├── register_ticker.py        ← 티커 등록 전용
-├── fetch_and_save.py         ← 주가 수집 및 저장 전용
+├── main.py                         ← 메인 메뉴 루프
+│
+├── commands/                       ← 사용자가 실행하는 CLI 스크립트 모음
+│   ├── register_ticker.py          ← 티커 등록
+│   ├── fetch_and_save.py           ← 주가 수집 및 저장
+│   ├── view_tickers.py             ← 등록된 티커 목록 출력
+│   └── view_prices.py              ← 특정 티커의 일별 가격 출력
+│
 ├── db/
-│   └── mysql_connector.py
-└── services/
-    ├── fetcher.py
-    ├── inserter.py
-    └── ticker_manager.py
+│   └── mysql_connector.py          ← MySQL 연결 유틸
+│
+├── services/                       ← 내부 로직 처리 모듈
+│   ├── fetcher.py                  ← yfinance 수집
+│   ├── inserter.py                 ← DB 저장 로직
+│   └── ticker_manager.py           ← 티커 등록/조회 처리
+│
+└── utils/
+    └── table_formatter.py          ← 한글 정렬 고려한 테이블 출력 유틸
 ```
