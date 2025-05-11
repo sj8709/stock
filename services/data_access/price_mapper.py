@@ -1,4 +1,5 @@
 from db.mysql_connector import get_connection
+import pandas as pd
 
 def select_price_table(ticker: str, limit: int = 50) -> list[dict]:
     conn = get_connection()
@@ -76,3 +77,22 @@ def insert_daily_price_record(ticker, trade_date, open_price, high_price, low_pr
     conn.commit()
     cursor.close()
     conn.close()
+    
+def get_price_dataframe(ticker: str) -> pd.DataFrame:
+    """
+    주어진 티커의 주가 데이터를 DataFrame으로 조회한다.
+
+    Returns:
+        DataFrame: trade_date를 인덱스로 한 고가/저가/종가 데이터프레임
+    """
+    conn = get_connection()
+    query = """
+        SELECT trade_date, open_price, high_price, low_price, close_price
+        FROM daily_price
+        WHERE ticker = %s
+        ORDER BY trade_date
+    """
+    df = pd.read_sql(query, conn, params=(ticker,))
+    conn.close()
+    df.set_index('trade_date', inplace=True)
+    return df

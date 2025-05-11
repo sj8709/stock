@@ -4,6 +4,7 @@ from commands.view_tickers import view_ticker_list
 from commands.view_prices import view_prices_list
 from commands.analyze_returns import run_return_analysis
 from commands.backtest_strategy import backtest_cli
+from commands.calc_indicators import run_indicator_calc
 
 def main():
     while True:
@@ -14,8 +15,9 @@ def main():
         print("4. 주가 데이터 조회")
         print("5. 수익률 분석")
         print("6. 백테스트 실행")
+        print("7. 지표 계산 및 저장")
         print("0. 종료")
-        choice = input("선택 (0~6): ").strip()
+        choice = input("선택 (0~7): ").strip()
 
         if choice == '1':
             register_ticker_flow()
@@ -29,6 +31,8 @@ def main():
             run_return_analysis()
         elif choice == '6':
             backtest_cli()
+        elif choice == '7':
+            run_indicator_calc()
         elif choice == '0':
             print("👋 프로그램을 종료합니다.")
             break
