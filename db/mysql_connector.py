@@ -1,3 +1,4 @@
+# db/mysql_connector.py
 import mysql.connector
 
 def get_connection():

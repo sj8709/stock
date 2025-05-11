@@ -1,3 +1,4 @@
+# services/data_access/ticker_mapper.py
 from db.mysql_connector import get_connection
 
 def select_all_tickers() -> list[dict]:

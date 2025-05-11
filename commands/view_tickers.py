@@ -1,3 +1,4 @@
+# commands/view_tickers.py
 from services.ticker_manager import get_all_tickers
 from utils.table_formatter import get_display_width, pad_text
 

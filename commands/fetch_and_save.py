@@ -1,3 +1,4 @@
+#commands/fetch_and_save.py
 from services.ticker_manager import get_all_tickers
 from services.fetcher import fetch_stock_data
 from services.inserter import insert_daily_price

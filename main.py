@@ -1,3 +1,4 @@
+#main.py
 from commands.register_ticker import register_ticker_flow
 from commands.fetch_and_save import fetch_and_save_flow
 from commands.view_tickers import view_ticker_list

@@ -1,3 +1,4 @@
+#commands/register_ticker.py
 from services.ticker_manager import add_ticker
 
 def register_ticker_flow():

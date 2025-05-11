@@ -1,3 +1,4 @@
+# services/indicators/bollinger.py
 import pandas as pd
 
 def calculate_bollinger_bands(close: pd.Series, window: int = 20, num_std: float = 2.0) -> pd.DataFrame:

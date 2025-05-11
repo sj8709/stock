@@ -1,4 +1,4 @@
-
+# service/backtester.py
 from db.mysql_connector import get_connection
 from commands.analyze_returns import calculate_returns, fit_maxwell_distribution, find_outliers
 

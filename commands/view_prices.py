@@ -1,4 +1,4 @@
-# view_prices.py
+# commands/view_prices.py
 from services.data_access.price_mapper import select_recent_prices_by_ticker
 from utils.table_formatter import print_table
 
